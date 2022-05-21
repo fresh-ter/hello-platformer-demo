@@ -1,2 +1,2 @@
-# hello-platformer
-A simple first platformer made in Godot Engine
+# hello-platformer-demo
+A simple platformer with procedural world generation
