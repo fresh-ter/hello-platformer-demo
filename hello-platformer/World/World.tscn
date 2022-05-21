@@ -11,3 +11,12 @@ tile_set = ExtResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 1, 131081, 0, 65545, 1310745, 0, 131081, 1179673, 0 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 20
+emission_shape = 1
+emission_sphere_radius = 5.21
+gravity = Vector2( 0, 1 )
+orbit_velocity = 0.06
+scale_amount = 0.0
+scale_amount_random = 1.0
