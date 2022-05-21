@@ -15,10 +15,16 @@ const GRASS_CHANCE = 0.3
 const MUSHROOM_CHANCE = 0.4
 const TREE_CHANCE = 0.15
 
+const GRUB_CHANCE = 0.3
+
+const NUBE_CHANCE = 0.6
+
 const DEFAULT_BACKGROUD_COLOR = Color("#fcdfcd")
 
 var world_start = Vector2(0, 0)
 var world_end = Vector2(0, 0)
+
+var grub_sceene = preload("res://Units/Grub/Grub.tscn")
 
 
 func _ready():
@@ -32,9 +38,14 @@ func _ready():
 
 
 func clear():
+	if get_tree().has_group("npc"):
+		for npc in get_tree().get_nodes_in_group('npc'):
+			if npc.has_method('queue_free'):
+				npc.queue_free()
+	
 	portal.emitting = false
 	map.clear()
-#	VisualServer.set_default_clear_color(DEFAULT_BACKGROUD_COLOR)
+	VisualServer.set_default_clear_color(DEFAULT_BACKGROUD_COLOR)
 
 
 func generate(
@@ -67,6 +78,30 @@ func _generate_world(
 	start=false
 ):
 	_generate_map(world_size, world_position, start)
+	_spawn_npc(world_size, world_position)
+
+
+func _spawn_npc(
+	world_size: Vector2,
+	world_position: Vector2
+) -> void:
+	var rand: float
+	
+	for x in range(world_size.x):
+		if x % 5 != 0:
+			continue
+		
+		rand = rng.randf()
+		print(rand)
+		
+		if rand < GRUB_CHANCE:
+			print("Grub...")
+			var grub = grub_sceene.instance()
+			grub.add_to_group("npc")
+			grub.position = map.map_to_world(world_position+Vector2(x,world_size.y - 50))
+			add_child(grub)
+	
+	print(get_tree().get_nodes_in_group("npc"))
 
 
 func _generate_map(
@@ -76,6 +111,24 @@ func _generate_map(
 ):
 	_generate_main_ground(world_size, world_position, start)
 	_generate_vegetation(world_size, world_position)
+	_generate_nubes(world_size, world_position)
+
+
+func _generate_nubes(world_size, world_position):
+	var rand: float
+	var vegetation_id: int = 3
+	
+	for x in range(world_size.x):
+		rand = rng.randf()
+		print(rand)
+		
+		if rand < NUBE_CHANCE:
+			var rise_y = 0
+			while map.get_cellv(world_position+Vector2(x,rise_y-1)) != -1:
+				rise_y -= 1
+			map.set_cellv(world_position+Vector2(x,rise_y-rng.randi_range(3,9)), rng.randi_range(11,12))
+			
+			
 
 
 func _generate_vegetation(
