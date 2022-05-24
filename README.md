@@ -1,5 +1,5 @@
 # hello-platformer-demo
-A simple platformer with procedural world generation
+A simple platformer demo with procedural world generation.
 
 ![image](https://user-images.githubusercontent.com/16897978/169909370-02749fde-0004-4e93-8683-bd072c7e81d2.png)
 
